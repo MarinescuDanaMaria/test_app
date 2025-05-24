@@ -1,29 +1,31 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { UserDetailContext } from './../context/UserDetailContext';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  const [loaded,error]=useFonts({
+    'poppins':require('.//../assets/fonts/Poppins-Regular.ttf'),
+    'poppins-bold':require('.//../assets/fonts/Poppins-Bold.ttf'),
+    'poppins-medium':require('.//../assets/fonts/Poppins-Medium.ttf'),
+    'poppins-semiBold':require('.//../assets/fonts/Poppins-SemiBold.ttf'),
+    'outfit':require('.//../assets/fonts/Outfit-Regular.ttf'),
+    'outfit-bold':require('.//../assets/fonts/Outfit-Bold.ttf'),
+  })
 
+
+  const [userDetail,setUserDetail]=useState();
+  useEffect(() => {
+    //console.log("User detail updated in context:", userDetail);
+  }, [userDetail]);
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <UserDetailContext.Provider value={{userDetail,setUserDetail}}>  
+    <Stack screenOptions={{
+      headerShown:false
+    }}>
+      
+    </Stack>
+    </UserDetailContext.Provider> 
   );
 }

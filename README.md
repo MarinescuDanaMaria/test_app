@@ -1,50 +1,23 @@
-# Welcome to your Expo app 👋
+pentru a rula proiectul, ai nevoie de :
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+npm install
 
-## Get started
+npm install firebase
 
-1. Install dependencies
+npx expo install @react-native-async-storage/async-storage
 
-   ```bash
-   npm install
-   ```
+npm install react-native-progress
 
-2. Start the app
+npm install react-native-flip-card
 
-   ```bash
-   npx expo start
-   ```
+npm install react-native-vector-icons
 
-In the output, you'll find options to open the app in a
+///////
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+PENTRU A ADAUGA/ ACTUALIZA CURSURILE : modif fisierul CoursesData.js , dupa rulam
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+node seedCourses.js
 
-## Get a fresh project
+///
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+pe harta cursurilor vreau sa apara si celelalte cursuri, chiar daca nu sunt deblocate inca , cu un lacat in dreptul numelor lor,si intre cursuri sa fie o linie punctata serpuita, iar ordinea lor sa porneasca de jos in sus ( primul sa fie jos de tot , si sa pot sa derulez in sus pana la ultimul ) totodata vreau sa aranjezi scrisul din fiecare content din fisierul CoursesData.js , unde e tabel sa formatezi scrisul sub forma de tabel, si stiul sa fie poppins, si de asemenea, vreau la finalul quiz-ului sa apara in continuare si ce raspunsuri am gresit si care e raspunsul corect la ele, inainte mergea aceasta functionalitate, codul e acolo, bara de progres de pe profile nu merge, iar cand apas pe optiunea simulator atacuri din home, nu face nimic

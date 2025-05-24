@@ -18,6 +18,9 @@
       },
       "edgeToEdgeEnabled": true
     },
+    "ios": {
+      "bundleIdentifier": "com.proiect.ElearningApp"
+     },
     "web": {
       "bundler": "metro",
       "output": "static",
