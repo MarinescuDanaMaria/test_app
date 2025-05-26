@@ -1,11 +1,12 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useContext, useState } from 'react';
 import { Dimensions, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Button from '../../components/Shared/Button';
 import { db } from '../../config/firebaseConfig';
 import Colors from '../../constants/Colors';
+import { UserDetailContext } from '../../context/UserDetailContext';
 
 export default function ChapterView() {
   const { chapterParams, docId, chapterIndex } = useLocalSearchParams();
@@ -13,6 +14,7 @@ export default function ChapterView() {
   const [currentPage, setCurrentPage] = useState(0);
   const [loader, setLoader] = useState(false);
   const router = useRouter();
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
 
   const GetProgress = () => {
     const total = chapter?.subsections?.length || 1;
@@ -21,17 +23,39 @@ export default function ChapterView() {
 
   const onChapterComplete = async () => {
     setLoader(true);
-    await updateDoc(doc(db, 'courses', docId), {
-      completedChapter: arrayUnion(chapterIndex),
-    });
-    setLoader(false);
-    router.replace('/courseView/' + docId);
+    try {
+      const userRef = doc(db, 'users', userDetail.uid);
+      const updatedStartedCourses = {
+        ...userDetail.startedCourses,
+        [docId]: {
+          completedChapters: [
+            ...(userDetail.startedCourses[docId]?.completedChapters || []),
+            chapterIndex
+          ]
+        }
+      };
+
+      await updateDoc(userRef, {
+        startedCourses: updatedStartedCourses
+      });
+
+      setUserDetail({
+        ...userDetail,
+        startedCourses: updatedStartedCourses
+      });
+
+      router.replace('/courseView/' + docId);
+    } catch (error) {
+      console.error('Error updating chapter completion:', error);
+    } finally {
+      setLoader(false);
+    }
   };
 
   const subsection = chapter?.subsections?.[currentPage];
 
   return (
-    <ScrollView  style={styles.container}>
+    <ScrollView style={styles.container}>
       <Progress.Bar
         progress={GetProgress()}
         width={Dimensions.get('screen').width * 0.85}
@@ -58,7 +82,7 @@ export default function ChapterView() {
           )}
         </View>
       </View>
-    </ScrollView >
+    </ScrollView>
   );
 }
 

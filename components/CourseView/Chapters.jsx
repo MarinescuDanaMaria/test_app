@@ -1,16 +1,18 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { useContext } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { UserDetailContext } from '../../context/UserDetailContext';
 import Colors from '../../constants/Colors';
 
 export default function Chapters({ course }) {
   const router = useRouter();
+  const { userDetail } = useContext(UserDetailContext);
 
   const isChapterCompleted = (index) => {
-  const completedChapter = Array.isArray(course?.completedChapter) ? course.completedChapter : [];
-  const isCompleted = completedChapter.includes(index.toString());
-  return isCompleted;
-};
+    const courseProgress = userDetail?.startedCourses?.[course.docId];
+    return courseProgress?.completedChapters?.includes(index.toString());
+  };
 
   const renderChapter = ({ item, index }) => (
     <TouchableOpacity

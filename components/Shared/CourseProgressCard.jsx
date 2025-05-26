@@ -1,15 +1,21 @@
+import { useContext } from 'react';
 import { Image, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
 import Colors from '../../constants/Colors';
 import { imageAssets } from '../../constants/Option';
+import { UserDetailContext } from '../../context/UserDetailContext';
 
 export default function CourseProgressCard({ item, width = 270 }) {
+  const { userDetail } = useContext(UserDetailContext);
+
   const GetCompletedChapters = (course) => {
-    const completed = Array.isArray(course?.completedChapter) ? course.completedChapter.length : 0;
+    const completed = userDetail?.startedCourses?.[course.docId]?.completedChapters?.length || 0;
     const total = course?.chapters?.length || 0;
     if (total === 0) return 0;
     return completed / total;
   };
+
+  const completedCount = userDetail?.startedCourses?.[item.docId]?.completedChapters?.length || 0;
 
   return (
     <View
@@ -19,7 +25,7 @@ export default function CourseProgressCard({ item, width = 270 }) {
         backgroundColor: Colors.BG_GRAY,
         borderRadius: 15,
         width: width,
-        height:140
+        height: 140
       }}
     >
       <View
@@ -77,7 +83,7 @@ export default function CourseProgressCard({ item, width = 270 }) {
             color: 'black',
           }}
         >
-          {(item?.completedChapter?.length || 0)} din {item?.chapters?.length || 0} capitole complete
+          {completedCount} din {item?.chapters?.length || 0} capitole complete
         </Text>
       </View>
     </View>
