@@ -14,7 +14,6 @@ export default function CourseRoadmap() {
   const { userDetail } = useContext(UserDetailContext);
   const router = useRouter();
   const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('screen').height;
 
   useEffect(() => {
     getCourses();
@@ -27,7 +26,7 @@ export default function CourseRoadmap() {
         ...doc.data(),
         docId: doc.id
       }));
-      setCourses(coursesData.reverse()); // Reverse pentru a începe de jos
+      setCourses(coursesData.reverse());
     } catch (error) {
       console.error("Error fetching courses:", error);
     } finally {
@@ -83,7 +82,9 @@ export default function CourseRoadmap() {
           <View style={styles.progressBar}>
             <View style={[styles.progressFill, { width: `${(userDetail?.points % 100)}%` }]} />
           </View>
-          <Text style={styles.pointsText}>{userDetail?.points || 0} puncte • {100 - (userDetail?.points % 100)} până la următorul nivel</Text>
+          <Text style={styles.pointsText}>
+            {userDetail?.points || 0} puncte • {100 - (userDetail?.points % 100)} până la următorul nivel
+          </Text>
         </View>
 
         <View style={styles.roadmapContainer}>
@@ -91,7 +92,8 @@ export default function CourseRoadmap() {
             <Path
               d={`M${screenWidth/2} ${courses.length * 250} ${courses.map((_, i) => {
                 const y = (courses.length - i - 1) * 250;
-                return `Q${i % 2 ? screenWidth/2 + 80 : screenWidth/2 - 80} ${y + 125} ${screenWidth/2} ${y}`;
+                const controlX = i % 2 ? screenWidth/2 + 120 : screenWidth/2 - 120;
+                return `Q${controlX} ${y + 160} ${screenWidth/2} ${y}`;
               }).join(' ')}`}
               fill="none"
               stroke={Colors.PRIMARY}
@@ -143,7 +145,7 @@ export default function CourseRoadmap() {
                       <Ionicons
                         name={isCompleted ? "checkmark-circle" : isUnlocked ? "lock-open" : "lock-closed"}
                         size={24}
-                        color={isCompleted ? Colors.WHITE : isUnlocked ? Colors.WHITE : Colors.WHITE}
+                        color={Colors.WHITE}
                       />
                       <Text style={styles.statusText}>
                         {isCompleted ? "Completat" : isUnlocked ? "Deblocat" : "Blocat"}
@@ -229,17 +231,17 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   completed: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: Colors.SUCCESS,
     borderColor: '#388E3C',
     borderWidth: 1,
   },
   unlocked: {
-    backgroundColor: '#1976D2',
-    borderColor: '#1565C0',
+    backgroundColor: Colors.PRIMARY,
+    borderColor: Colors.SECONDARY,
     borderWidth: 1,
   },
   locked: {
-    backgroundColor: '#9E9E9E',
+    backgroundColor: Colors.GRAY,
     borderColor: '#757575',
     borderWidth: 1,
   },
